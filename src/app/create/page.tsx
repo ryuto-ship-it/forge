@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Cpu, Terminal, Copy, Send, CheckCircle2 } from "lucide-react";
+import { Cpu, Terminal, Copy, CheckCircle2 } from "lucide-react";
 
 export default function CreateTokenPage() {
   const [name, setName] = useState("");
@@ -17,8 +17,6 @@ export default function CreateTokenPage() {
   const handleGenerateAI = () => {
     if (!name) return alert("System requires Asset Name for initialization.");
     setIsGenerating(true);
-    
-    // Simulate AI delay
     setTimeout(() => {
       setTicker(name.substring(0, 4).toUpperCase());
       setDescription(`Decentralized automated market maker and synthetic asset liquidity protocol for ${name}. Implements algorithmic bonding curves to ensure continuous liquidity depth and zero-slippage entry vectors for institutional capital. Initial supply distributed via smart contract locked liquidity pools.`);
@@ -26,12 +24,32 @@ export default function CreateTokenPage() {
     }, 1500);
   };
 
-  const handleDeploy = () => {
+  const handleDeploy = async () => {
+    if (!name || !ticker) return alert("Asset Name and Ticker are required.");
     setIsDeploying(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/tweet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          ticker,
+          description,
+          telegram: "",
+          twitter: "",
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert(`✅ Token deployed and tweeted successfully!`);
+      } else {
+        alert(`❌ Tweet failed: ${data.error}`);
+      }
+    } catch (error) {
+      alert(`❌ Error: ${error}`);
+    } finally {
       setIsDeploying(false);
-      alert("Deployment simulated successfully.");
-    }, 2000);
+    }
   };
 
   const generatedPromo = `[SYS_UPDATE] New Market Initialized: $${ticker || "TKR"}
@@ -39,12 +57,10 @@ Protocol: ${name || "Unknown"}
 Status: Bonding Curve Active
 Network: Base L2
 
-Access Terminal: https://forge.prime/market/${ticker || "TKR"}`;
+Access Terminal: https://forge-rho-eight.vercel.app/token/${ticker || "TKR"}`;
 
   return (
     <div className="max-w-[1200px] mx-auto w-full gap-8 grid grid-cols-1 lg:grid-cols-12">
-      
-      {/* Left Column: Form */}
       <div className="lg:col-span-8 flex flex-col gap-6">
         <div className="mb-2">
           <h1 className="text-2xl font-mono font-bold text-white mb-2 uppercase tracking-widest">Initialize New Market</h1>
@@ -69,7 +85,6 @@ Access Terminal: https://forge.prime/market/${ticker || "TKR"}`;
                   className="bg-background border-border text-white font-mono rounded-none h-12 focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="ticker" className="text-xs font-mono text-muted-foreground uppercase">Ticker Symbol</Label>
                 <Input 
@@ -115,11 +130,10 @@ Access Terminal: https://forge.prime/market/${ticker || "TKR"}`;
           disabled={isDeploying}
           className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-primary text-black hover:bg-primary/90 rounded-none uppercase"
         >
-          {isDeploying ? "Deploying Contract..." : "Execute Deployment"}
+          {isDeploying ? "Deploying & Tweeting..." : "Execute Deployment"}
         </Button>
       </div>
 
-      {/* Right Column: Console & Output */}
       <div className="lg:col-span-4 flex flex-col gap-6">
         <div className="border border-border bg-card p-6 h-full flex flex-col">
           <div className="flex items-center justify-between mb-4 border-b border-border pb-4">
@@ -161,7 +175,6 @@ Access Terminal: https://forge.prime/market/${ticker || "TKR"}`;
           </div>
         </div>
       </div>
-
     </div>
   );
 }
