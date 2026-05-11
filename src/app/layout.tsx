@@ -33,20 +33,22 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-background text-foreground">
         <Providers>
           {/* Navigation */}
-          <header className="border-b border-border bg-background sticky top-0 z-50">
-            <div className="px-6 h-14 flex items-center justify-between max-w-[1600px] mx-auto">
-              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <span className="font-mono font-bold text-lg tracking-widest text-white">FORGE<span className="text-primary">.PRIME</span></span>
-              </Link>
-              <nav className="hidden md:flex items-center gap-6 text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                <Link href="/" className="hover:text-white transition-colors">
-                  Markets
+          <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+            <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+              <div className="flex items-center gap-12">
+                <Link href="/" className="font-mono text-2xl font-black tracking-widest text-primary flex items-center hover:scale-105 transition-transform">
+                  FORGE<span className="text-white">.PRIME</span>
                 </Link>
-                <Link href="/create" className="hover:text-white transition-colors">
-                  Deploy
-                </Link>
-              </nav>
-              <div className="flex items-center gap-4 scale-90 origin-right">
+                <nav className="hidden md:flex gap-2">
+                  <Link href="/" className="px-6 py-3 text-sm font-mono font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-all uppercase tracking-widest border border-transparent hover:border-primary/20">
+                    Markets
+                  </Link>
+                  <Link href="/create" className="px-6 py-3 text-sm font-mono font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-all uppercase tracking-widest border border-transparent hover:border-primary/20">
+                    Deploy
+                  </Link>
+                </nav>
+              </div>
+              <div className="flex items-center gap-4">
                 <ConnectButton />
               </div>
             </div>
