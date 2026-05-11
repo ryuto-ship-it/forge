@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Cpu, Terminal, Copy, CheckCircle2, Twitter } from "lucide-react";
+import { Cpu, Terminal, Copy, CheckCircle2 } from "lucide-react";
 
 export default function CreateTokenPage() {
   const [name, setName] = useState("");
   const [ticker, setTicker] = useState("");
   const [description, setDescription] = useState("");
   const [telegram, setTelegram] = useState("");
-  const [twitter, setTwitter] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDeployed, setIsDeployed] = useState(false);
 
@@ -32,17 +32,7 @@ export default function CreateTokenPage() {
   };
 
   const handleTweet = () => {
-    const text = `🚀 New token launched on Forge!
-
-$${ticker} - ${name}
-${description.slice(0, 100)}...
-
-🔗 Trade: https://forge-rho-eight.vercel.app
-${telegram ? `📱 Telegram: ${telegram}` : ""}
-${twitter ? `🐦 Twitter: ${twitter}` : ""}
-
-#Base #Crypto #${ticker} #Forge`;
-
+    const text = `🚀 New token launched on Forge!\n\n$${ticker} - ${name}\n${description.slice(0, 100)}...\n\n🔗 Trade: https://forge-rho-eight.vercel.app\n${telegram ? `📱 Telegram: ${telegram}\n` : ""}${twitterLink ? `🐦 Twitter: ${twitterLink}\n` : ""}\n#Base #Crypto #${ticker} #Forge`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
@@ -98,11 +88,7 @@ Access Terminal: https://forge-rho-eight.vercel.app/token/${ticker || "TKR"}`;
               onClick={handleGenerateAI}
               disabled={isGenerating}
             >
-              {isGenerating ? (
-                <Terminal className="w-4 h-4 mr-2 animate-pulse text-primary" />
-              ) : (
-                <Terminal className="w-4 h-4 mr-2" />
-              )}
+              <Terminal className="w-4 h-4 mr-2" />
               {isGenerating ? "Processing..." : "Auto-Generate Technical Spec"}
             </Button>
 
@@ -130,12 +116,12 @@ Access Terminal: https://forge-rho-eight.vercel.app/token/${ticker || "TKR"}`;
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="twitter" className="text-xs font-mono text-muted-foreground uppercase">Twitter Link</Label>
+                <Label htmlFor="twitterLink" className="text-xs font-mono text-muted-foreground uppercase">Twitter Link</Label>
                 <Input 
-                  id="twitter" 
+                  id="twitterLink" 
                   placeholder="https://x.com/..." 
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
+                  value={twitterLink}
+                  onChange={(e) => setTwitterLink(e.target.value)}
                   className="bg-background border-border text-white font-mono rounded-none h-12 focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-none"
                 />
               </div>
@@ -154,10 +140,9 @@ Access Terminal: https://forge-rho-eight.vercel.app/token/${ticker || "TKR"}`;
           {isDeployed && (
             <Button 
               onClick={handleTweet}
-              className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-sky-500 text-white hover:bg-sky-400 rounded-none uppercase flex items-center justify-center gap-2"
+              className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-sky-500 text-white hover:bg-sky-400 rounded-none uppercase"
             >
-              <Twitter className="w-5 h-5" />
-              Share on Twitter
+              Share on X / Twitter
             </Button>
           )}
         </div>
