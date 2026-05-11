@@ -5,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Cpu, Terminal, Copy, CheckCircle2 } from "lucide-react";
+import { Cpu, Terminal, Copy, CheckCircle2, Twitter } from "lucide-react";
 
 export default function CreateTokenPage() {
   const [name, setName] = useState("");
   const [ticker, setTicker] = useState("");
   const [description, setDescription] = useState("");
+  const [telegram, setTelegram] = useState("");
+  const [twitter, setTwitter] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isDeploying, setIsDeploying] = useState(false);
+  const [isDeployed, setIsDeployed] = useState(false);
 
   const handleGenerateAI = () => {
     if (!name) return alert("System requires Asset Name for initialization.");
@@ -24,32 +26,25 @@ export default function CreateTokenPage() {
     }, 1500);
   };
 
-  const handleDeploy = async () => {
+  const handleDeploy = () => {
     if (!name || !ticker) return alert("Asset Name and Ticker are required.");
-    setIsDeploying(true);
-    try {
-      const response = await fetch("/api/tweet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          ticker,
-          description,
-          telegram: "",
-          twitter: "",
-        }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        alert(`✅ Token deployed and tweeted successfully!`);
-      } else {
-        alert(`❌ Tweet failed: ${data.error}`);
-      }
-    } catch (error) {
-      alert(`❌ Error: ${error}`);
-    } finally {
-      setIsDeploying(false);
-    }
+    setIsDeployed(true);
+  };
+
+  const handleTweet = () => {
+    const text = `🚀 New token launched on Forge!
+
+$${ticker} - ${name}
+${description.slice(0, 100)}...
+
+🔗 Trade: https://forge-rho-eight.vercel.app
+${telegram ? `📱 Telegram: ${telegram}` : ""}
+${twitter ? `🐦 Twitter: ${twitter}` : ""}
+
+#Base #Crypto #${ticker} #Forge`;
+
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
   };
 
   const generatedPromo = `[SYS_UPDATE] New Market Initialized: $${ticker || "TKR"}
@@ -122,16 +117,50 @@ Access Terminal: https://forge-rho-eight.vercel.app/token/${ticker || "TKR"}`;
                 className="bg-background border-border text-white font-mono text-sm rounded-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary resize-none transition-none"
               />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="telegram" className="text-xs font-mono text-muted-foreground uppercase">Telegram Link</Label>
+                <Input 
+                  id="telegram" 
+                  placeholder="https://t.me/..." 
+                  value={telegram}
+                  onChange={(e) => setTelegram(e.target.value)}
+                  className="bg-background border-border text-white font-mono rounded-none h-12 focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="twitter" className="text-xs font-mono text-muted-foreground uppercase">Twitter Link</Label>
+                <Input 
+                  id="twitter" 
+                  placeholder="https://x.com/..." 
+                  value={twitter}
+                  onChange={(e) => setTwitter(e.target.value)}
+                  className="bg-background border-border text-white font-mono rounded-none h-12 focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-none"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <Button 
-          onClick={handleDeploy}
-          disabled={isDeploying}
-          className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-primary text-black hover:bg-primary/90 rounded-none uppercase"
-        >
-          {isDeploying ? "Deploying & Tweeting..." : "Execute Deployment"}
-        </Button>
+        <div className="flex flex-col gap-3">
+          <Button 
+            onClick={handleDeploy}
+            className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-primary text-black hover:bg-primary/90 rounded-none uppercase"
+          >
+            Execute Deployment
+          </Button>
+
+          {isDeployed && (
+            <Button 
+              onClick={handleTweet}
+              className="w-full h-14 text-sm font-mono tracking-widest font-bold bg-sky-500 text-white hover:bg-sky-400 rounded-none uppercase flex items-center justify-center gap-2"
+            >
+              <Twitter className="w-5 h-5" />
+              Share on Twitter
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="lg:col-span-4 flex flex-col gap-6">
