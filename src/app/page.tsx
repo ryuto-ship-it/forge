@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Activity, Zap, Shield, BarChart3, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowUpRight, Activity, Zap, ShieldAlert, BarChart3, TrendingUp, Layers } from "lucide-react";
 
 const MARKETS_DATA = [
   { id: "1", name: "Aegis Protocol", ticker: "AGS", marketCap: "$12.4M", volume: "$3.1M", price: "$0.1240", change: "+12.4%", progress: 100, status: "LIVE_DEX", image: "/tokens/aegis.png" },
@@ -22,220 +21,176 @@ const MARKETS_DATA = [
   { id: "12", name: "Echo Protocol", ticker: "EKO", marketCap: "$12K", volume: "$2K", price: "$0.0001", change: "+50.1%", progress: 1, status: "BONDING", image: "/tokens/echo.png" },
 ];
 
-const FAKE_TRADES = [
-  "🟢 0x7f4... bought 2.5 ETH of $AGS",
-  "🔴 0x1a2... sold 0.8 ETH of $NEX",
-  "🟢 0x9b8... bought 5.0 ETH of $NVA",
-  "🚀 $QTY just hit 85% bonding curve!",
-  "🟢 0x3c4... bought 1.2 ETH of $ZPT",
-  "🔥 $AGS trending #1 on Base",
-  "🔴 0x5e6... sold 3.1 ETH of $VGV",
-  "🟢 0x8d9... bought 10.0 ETH of $EKO",
-];
-
 export default function Home() {
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background pb-20 overflow-hidden">
+    <div className="flex flex-col w-full min-h-screen bg-background pb-20">
       
-      {/* 1. HERO VIDEO SECTION */}
-      <section className="relative w-full h-[70vh] min-h-[600px] flex items-center justify-center border-b border-border overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="w-full h-full object-cover filter brightness-150 contrast-125"
-          >
-            <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4" />
-          </video>
-          {/* Fallback gradient if video fails */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
+      {/* 1. HERO INSTITUTIONAL TERMINAL */}
+      <section className="w-full flex items-center border-b border-border bg-card p-8 md:p-12 mt-4 relative overflow-hidden">
+        {/* Terminal Grid Background */}
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" style={{backgroundImage: "linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)", backgroundSize: "20px 20px"}}></div>
+
+        <div className="relative z-10 w-full flex flex-col items-start max-w-5xl">
+          <div className="flex items-center gap-2 mb-4 text-xs font-mono font-bold text-muted-foreground tracking-widest uppercase">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Systems Operational | Base L2
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-black font-sans tracking-tight text-white mb-4 uppercase">
+            Institutional <span className="text-primary">Liquidity</span> <br /> Terminal
+          </h1>
+          
+          <p className="text-sm text-muted-foreground font-mono max-w-2xl mb-8 leading-relaxed">
+            Execute high-frequency token deployments and liquidity provisioning on the Base network. Fully automated bonding curves and immediate DEX transitions. Unrivaled execution for the on-chain economy.
+          </p>
+          
+          <div className="flex gap-4">
+            <Link href="/create">
+              <Button className="h-12 px-8 text-sm bg-primary text-black hover:bg-green-400 font-mono font-bold tracking-widest uppercase rounded-none transition-none shadow-none">
+                Deploy Asset <Zap className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+            <Link href="#markets">
+              <Button variant="outline" className="h-12 px-8 text-sm border-border bg-background text-white hover:bg-secondary font-mono font-bold tracking-widest uppercase rounded-none transition-none shadow-none">
+                View Markets
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h1 className="text-5xl md:text-7xl font-black font-mono tracking-tighter text-white mb-6 uppercase drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-              The Next Evolution of <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-primary animate-pulse">
-                On-Chain Markets
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground font-mono max-w-2xl mx-auto mb-10">
-              Launch, trade, and scale institutional-grade synthetic assets on Base. Lightning fast execution, automated liquidity, zero friction.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link href="/create">
-                <Button className="h-16 px-10 text-lg bg-primary text-black hover:bg-white font-mono font-bold tracking-widest uppercase rounded-none transition-all duration-300 shadow-[0_0_40px_rgba(212,175,55,0.4)] hover:shadow-[0_0_60px_rgba(255,255,255,0.6)] hover:scale-105">
-                  Launch Token <Zap className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="#markets">
-                <Button variant="outline" className="h-16 px-10 text-lg border-primary/50 text-white hover:bg-primary/10 font-mono font-bold tracking-widest uppercase rounded-none backdrop-blur-md transition-all hover:border-primary">
-                  Explore Markets
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+        {/* Terminal Data Side Panel */}
+        <div className="hidden lg:flex flex-col gap-4 absolute right-12 top-12 z-10 w-64">
+          <div className="border border-border bg-background p-4">
+            <div className="text-[10px] font-mono text-muted-foreground uppercase mb-1">Network TVL</div>
+            <div className="text-xl font-mono text-primary font-bold">$42.5M</div>
+          </div>
+          <div className="border border-border bg-background p-4">
+            <div className="text-[10px] font-mono text-muted-foreground uppercase mb-1">24H Volume</div>
+            <div className="text-xl font-mono text-white font-bold">$12.1M</div>
+          </div>
+          <div className="border border-border bg-background p-4">
+            <div className="text-[10px] font-mono text-muted-foreground uppercase mb-1">Active Markets</div>
+            <div className="text-xl font-mono text-white font-bold">1,240</div>
+          </div>
         </div>
-
-        {/* Floating Stats */}
-        <motion.div 
-          initial={{ opacity: 0, bottom: -50 }}
-          animate={{ opacity: 1, bottom: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="absolute bottom-0 left-0 w-full bg-background/80 backdrop-blur-xl border-t border-border grid grid-cols-2 md:grid-cols-4 divide-x divide-border"
-        >
-          {[
-            { label: "NETWORK TVL", value: "$42.5M" },
-            { label: "24H VOLUME", value: "$12.1M" },
-            { label: "ACTIVE MARKETS", value: "1,240" },
-            { label: "SECURITY AUDITS", value: "100%" },
-          ].map((stat, i) => (
-            <div key={i} className="p-4 md:p-6 text-center hover:bg-primary/5 transition-colors cursor-default">
-              <div className="text-xs font-mono font-bold tracking-wider text-muted-foreground mb-1">{stat.label}</div>
-              <div className="text-xl md:text-2xl mono-num text-primary drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">{stat.value}</div>
-            </div>
-          ))}
-        </motion.div>
       </section>
 
-      {/* 2. LIVE TRADING MARQUEE */}
-      <div className="w-full bg-primary/10 border-b border-primary/20 py-2 overflow-hidden flex relative z-20">
-        <div className="absolute left-0 w-32 h-full bg-gradient-to-r from-background to-transparent z-10"></div>
-        <div className="absolute right-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10"></div>
-        <motion.div 
-          className="flex whitespace-nowrap items-center gap-12 font-mono text-sm tracking-widest font-bold"
-          animate={{ x: [0, -2000] }}
-          transition={{ ease: "linear", duration: 30, repeat: Infinity }}
-        >
-          {[...FAKE_TRADES, ...FAKE_TRADES, ...FAKE_TRADES].map((trade, i) => (
-            <span key={i} className={trade.includes("sold") ? "text-destructive" : "text-green-400"}>
-              {trade}
-            </span>
-          ))}
-        </motion.div>
+      {/* 2. LIVE TRADES FEED */}
+      <div className="w-full border-b border-border bg-background flex text-[10px] font-mono tracking-widest uppercase text-muted-foreground divide-x divide-border overflow-x-auto whitespace-nowrap">
+        <div className="px-4 py-2 bg-secondary text-white font-bold flex items-center gap-2">
+          <Activity className="w-3 h-3 text-primary" /> Live Trades
+        </div>
+        <div className="px-4 py-2 flex items-center gap-2"><span className="text-green-500">BUY</span> 0x7f4... 2.5 ETH $AGS</div>
+        <div className="px-4 py-2 flex items-center gap-2"><span className="text-destructive">SELL</span> 0x1a2... 0.8 ETH $NEX</div>
+        <div className="px-4 py-2 flex items-center gap-2"><span className="text-green-500">BUY</span> 0x9b8... 5.0 ETH $NVA</div>
+        <div className="px-4 py-2 flex items-center gap-2"><span className="text-primary">SYS</span> $QTY hit 85% curve</div>
+        <div className="px-4 py-2 flex items-center gap-2"><span className="text-green-500">BUY</span> 0x3c4... 1.2 ETH $ZPT</div>
       </div>
 
-      <div className="container mx-auto px-4 mt-16" id="markets">
+      <div className="mt-8" id="markets">
         
-        {/* 3. TRENDING SECTION */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-mono font-black tracking-widest text-white uppercase flex items-center gap-3 mb-8">
-            <TrendingUp className="w-8 h-8 text-primary" /> Hot Right Now
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 3. TRENDING DATA TABLE */}
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
+            <TrendingUp className="w-5 h-5 text-primary" /> 
+            <h2 className="text-sm font-mono font-bold tracking-widest text-white uppercase">Top Volume (24H)</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {MARKETS_DATA.slice(0, 3).map((token, i) => (
-              <motion.div
-                key={token.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-              >
-                <Link href={`/token/${token.id}`}>
-                  <div className="h-full border border-primary/30 bg-card p-6 relative overflow-hidden group shadow-[0_0_30px_rgba(0,255,255,0.02)] hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] transition-all cursor-pointer">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/20 rounded-full blur-[80px] group-hover:opacity-100 opacity-50 transition-opacity pointer-events-none"></div>
-                    
-                    <div className="flex items-start justify-between relative z-10 mb-6">
-                      <div className="w-24 h-24 relative shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-border bg-background group-hover:border-primary/50 transition-colors">
-                        <Image src={token.image} alt={token.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+              <Link key={token.id} href={`/token/${token.id}`}>
+                <div className="border border-border bg-card hover:border-primary/50 transition-none cursor-pointer flex flex-col group">
+                  <div className="p-4 border-b border-border flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-secondary border border-border flex items-center justify-center font-mono text-[10px] text-muted-foreground overflow-hidden relative">
+                        {token.image ? <Image src={token.image} alt={token.name} fill className="object-cover opacity-80 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all" /> : token.ticker}
                       </div>
-                      <div className="bg-primary/20 text-primary border border-primary/30 px-3 py-1 font-mono text-xs font-bold uppercase animate-pulse">
-                        Trending #{i+1}
+                      <div>
+                        <h3 className="font-bold text-white uppercase tracking-wider text-sm">{token.name}</h3>
+                        <div className="text-[10px] text-muted-foreground font-mono mt-0.5">{token.ticker}/ETH</div>
                       </div>
                     </div>
-                    
-                    <div className="relative z-10">
-                      <h3 className="text-2xl font-black text-white mb-1 group-hover:text-primary transition-colors">{token.name}</h3>
-                      <div className="text-muted-foreground font-mono mb-4 text-sm">${token.ticker}</div>
-                      
-                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
-                        <div>
-                          <div className="text-[10px] text-muted-foreground font-mono uppercase">Price</div>
-                          <div className="font-mono text-green-400 text-lg">{token.price}</div>
-                        </div>
-                        <div>
-                          <div className="text-[10px] text-muted-foreground font-mono uppercase">24h Chg</div>
-                          <div className="font-mono text-green-400 text-lg">{token.change}</div>
-                        </div>
-                      </div>
+                    <div className="bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase">
+                      RANK #{i+1}
                     </div>
                   </div>
-                </Link>
-              </motion.div>
+                  <div className="p-4 grid grid-cols-2 gap-4 bg-background">
+                    <div>
+                      <div className="text-[10px] text-muted-foreground font-mono uppercase mb-1">Last Price</div>
+                      <div className="font-mono text-white text-sm font-bold">{token.price}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-muted-foreground font-mono uppercase mb-1">24h Chg</div>
+                      <div className={`font-mono text-sm font-bold ${token.change.startsWith('-') ? 'text-destructive' : 'text-green-500'}`}>{token.change}</div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* 4. ALL MARKETS GRID */}
+        {/* 4. ALL MARKETS PANEL */}
         <div>
-          <h2 className="text-2xl font-mono font-black tracking-widest text-white uppercase flex items-center gap-3 mb-8">
-            <Activity className="w-8 h-8 text-primary" /> Active Deployments
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {MARKETS_DATA.map((token, i) => (
-              <motion.div
-                key={token.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: (i % 4) * 0.1, duration: 0.4 }}
-              >
-                <Link href={`/token/${token.id}`}>
-                  <div className="border border-border bg-card p-4 relative overflow-hidden group hover:border-primary/50 transition-all cursor-pointer h-full flex flex-col justify-between">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                    
-                    <div className="flex items-center gap-4 relative z-10 mb-4">
-                      <div className="w-12 h-12 relative border border-border bg-background shrink-0">
-                        <Image src={token.image} alt={token.name} fill className="object-cover" />
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
+            <Layers className="w-5 h-5 text-primary" /> 
+            <h2 className="text-sm font-mono font-bold tracking-widest text-white uppercase">Market Overview</h2>
+          </div>
+          
+          <div className="border border-border bg-card overflow-hidden">
+            {/* Table Header */}
+            <div className="grid grid-cols-12 gap-4 p-3 bg-secondary border-b border-border text-[10px] font-mono text-muted-foreground uppercase font-bold tracking-wider">
+              <div className="col-span-4">Asset</div>
+              <div className="col-span-2 text-right">Price</div>
+              <div className="col-span-2 text-right">24H Chg</div>
+              <div className="col-span-2 text-right">Market Cap</div>
+              <div className="col-span-2 text-right">Status</div>
+            </div>
+            
+            {/* Table Rows */}
+            <div className="divide-y divide-border">
+              {MARKETS_DATA.map((token) => (
+                <Link key={token.id} href={`/token/${token.id}`}>
+                  <div className="grid grid-cols-12 gap-4 p-3 items-center hover:bg-secondary/50 transition-none cursor-pointer group">
+                    <div className="col-span-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-background border border-border flex-shrink-0 relative overflow-hidden">
+                        {token.image && <Image src={token.image} alt={token.name} fill className="object-cover opacity-70 group-hover:opacity-100 grayscale group-hover:grayscale-0" />}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-bold text-white truncate group-hover:text-primary transition-colors">{token.name}</h3>
-                        <div className="text-xs text-muted-foreground font-mono truncate">${token.ticker}</div>
+                        <div className="font-bold text-white text-xs truncate group-hover:text-primary transition-colors">{token.name}</div>
+                        <div className="text-[10px] text-muted-foreground font-mono truncate">{token.ticker}</div>
                       </div>
                     </div>
-
-                    <div className="space-y-4 relative z-10">
-                      <div className="flex justify-between items-end">
-                        <div>
-                          <div className="text-[10px] text-muted-foreground font-mono uppercase">Market Cap</div>
-                          <div className="font-mono text-white text-sm">{token.marketCap}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-[10px] text-muted-foreground font-mono uppercase">Price</div>
-                          <div className={`font-mono text-sm ${token.change.startsWith('-') ? 'text-destructive' : 'text-green-400'}`}>
-                            {token.price}
-                          </div>
-                        </div>
-                      </div>
-
+                    
+                    <div className="col-span-2 text-right font-mono text-xs font-bold text-white">
+                      {token.price}
+                    </div>
+                    
+                    <div className={`col-span-2 text-right font-mono text-xs font-bold ${token.change.startsWith('-') ? 'text-destructive' : 'text-green-500'}`}>
+                      {token.change}
+                    </div>
+                    
+                    <div className="col-span-2 text-right font-mono text-xs text-muted-foreground">
+                      {token.marketCap}
+                    </div>
+                    
+                    <div className="col-span-2 flex justify-end">
                       {token.status === "LIVE_DEX" ? (
-                        <div className="w-full bg-green-500/10 border border-green-500/30 text-green-500 text-xs font-mono py-1.5 text-center font-bold">
-                          TRADING LIVE ON DEX
-                        </div>
+                        <span className="text-[10px] font-mono bg-green-500/10 text-green-500 border border-green-500/30 px-2 py-0.5">
+                          DEX LIVE
+                        </span>
                       ) : (
-                        <div>
-                          <div className="flex justify-between text-[10px] font-mono mb-1">
-                            <span className="text-muted-foreground">BONDING CURVE</span>
+                        <div className="w-24 flex flex-col gap-1">
+                          <div className="flex justify-between text-[8px] font-mono">
+                            <span className="text-muted-foreground">BONDING</span>
                             <span className="text-primary">{token.progress}%</span>
                           </div>
-                          <Progress value={token.progress} className="h-1 bg-secondary" />
+                          <Progress value={token.progress} className="h-1 bg-background" />
                         </div>
                       )}
                     </div>
                   </div>
                 </Link>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
