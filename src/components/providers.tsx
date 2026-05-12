@@ -12,7 +12,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const config = getDefaultConfig({
-  appName: "PrimeLaunch Terminal",
+  appName: "PrimeLaunch",
   projectId: "c8a946e3d23101b0b54cd61f77435f0f", // Placeholder Project ID
   chains: [base],
   ssr: true,
@@ -27,9 +27,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <RainbowKitProvider
           locale="en-US"
           theme={darkTheme({
-            accentColor: "#22c55e", // Green institutional accent
+            accentColor: "#4ade80", // Vibrant Mint Green
             accentColorForeground: "#000000",
-            borderRadius: "none",
+            borderRadius: "large",
             fontStack: "system",
             overlayBlur: "small",
           })}

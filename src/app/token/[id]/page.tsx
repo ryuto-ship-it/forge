@@ -4,8 +4,9 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Copy, Terminal, ShieldAlert, FileCode2, Wallet, Layers, ArrowRightLeft, Activity } from "lucide-react";
+import { Copy, Terminal, ShieldAlert, FileCode2, Wallet, Layers, ArrowRightLeft, Activity, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function TokenPage() {
   const params = useParams();
@@ -14,70 +15,75 @@ export default function TokenPage() {
   const [amount, setAmount] = useState("");
 
   return (
-    <div className="w-full flex flex-col gap-4 mt-4">
-      {/* Top Header Bar */}
-      <div className="border border-border bg-card p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-secondary border border-border flex items-center justify-center font-mono text-sm font-bold text-muted-foreground">
-            AGS
-          </div>
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-mono font-bold text-white uppercase tracking-wider">Aegis Protocol</h1>
-              <span className="text-[10px] font-mono text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 font-bold tracking-wider">AGS/ETH</span>
-            </div>
-            <div className="flex items-center gap-3 mt-1 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
-              <span className="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><FileCode2 className="w-3 h-3" /> 0x8f...3a2b</span>
-              <span>|</span>
-              <span className="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><Wallet className="w-3 h-3" /> Creator: 0x4a...9b1c</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-8">
-          <div className="flex flex-col items-end">
-            <span className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-1">Last Price</span>
-            <span className="text-lg font-mono font-bold text-green-500">0.00001240 ETH</span>
-          </div>
-          <div className="flex flex-col items-end hidden sm:flex">
-            <span className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-1">24h Change</span>
-            <span className="text-sm font-mono font-bold text-green-500 bg-green-500/10 px-2 py-0.5 border border-green-500/20">+12.4%</span>
-          </div>
-          <div className="flex flex-col items-end hidden md:flex">
-            <span className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-1">24h Volume</span>
-            <span className="text-sm font-mono text-white font-bold">412.5 ETH</span>
-          </div>
-        </div>
+    <div className="w-full">
+      {/* Top Header / Breadcrumbs */}
+      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 font-bold">
+        <span className="hover:text-white cursor-pointer transition-colors">Search for coins...</span>
+        <span>/</span>
+        <span className="text-white">Red Kitten Crew</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-        {/* Center - Chart & Order Book */}
-        <div className="lg:col-span-8 flex flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* LEFT COLUMN: Chart & About */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
           
-          {/* Chart */}
-          <div className="border border-border bg-card flex flex-col h-[500px]">
-            <div className="p-2 border-b border-border flex items-center justify-between bg-secondary/50">
-              <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-primary ml-2" />
-                <span className="text-[10px] font-mono font-bold tracking-widest text-white uppercase">Market Chart Data</span>
+          {/* Token Header */}
+          <div className="flex items-start gap-4 p-4 bg-card rounded-2xl border border-border">
+            <div className="w-16 h-16 rounded-xl bg-secondary overflow-hidden relative border border-border">
+              <Image src="/tokens/aegis.png" alt="RKC" fill className="object-cover" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-2xl font-bold text-white">Red Kitten Crew</h1>
+                <span className="text-xs font-mono font-bold bg-secondary text-white px-2 py-1 rounded-md">RKC</span>
               </div>
-              <div className="flex gap-1">
-                {["1m", "5m", "15m", "1H", "4H", "1D"].map((tf) => (
-                  <Button key={tf} variant="ghost" className={`h-6 text-[10px] font-mono rounded-none px-3 border border-transparent ${tf === "15m" ? "text-primary bg-primary/10 border-primary/20" : "text-muted-foreground hover:bg-secondary hover:text-white"}`}>
-                    {tf}
-                  </Button>
-                ))}
+              <div className="flex items-center gap-2 text-sm font-bold text-muted-foreground">
+                <div className="flex items-center gap-1 hover:text-white cursor-pointer transition-colors">
+                  <span className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-[8px] text-white">1</span>
+                  1nc1ne
+                </div>
+                <span>•</span>
+                <span>6h ago</span>
               </div>
             </div>
-            <div className="flex-1 relative overflow-hidden bg-[#09090b]">
+            <div className="flex gap-2">
+              <Button variant="secondary" className="rounded-full font-bold">Share</Button>
+            </div>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-4 gap-4">
+            <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+              <div className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Market Cap</div>
+              <div className="text-2xl font-bold text-primary">$6.71M</div>
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+              <div className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Vol 24h</div>
+              <div className="text-lg font-bold text-white">$30.1M</div>
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+              <div className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Price</div>
+              <div className="text-lg font-mono font-bold text-white">$0.00668</div>
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+              <div className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">24h Chg</div>
+              <div className="text-lg font-bold text-primary">+235k%</div>
+            </div>
+          </div>
+
+          {/* Chart */}
+          <div className="border border-border bg-card rounded-2xl flex flex-col h-[500px] overflow-hidden relative group">
+            <div className="flex-1 relative bg-[#0a0a0a]">
               {/* Grid Lines */}
               <div className="absolute inset-0" style={{backgroundImage: "linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)", backgroundSize: "40px 40px"}}></div>
               {/* Mock Candlestick Chart SVG */}
               <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 300">
-                <g strokeWidth="1.5">
+                <g strokeWidth="2">
                   {/* Candlesticks mock */}
                   {[...Array(50)].map((_, i) => {
-                    const isGreen = Math.random() > 0.45;
-                    const color = isGreen ? "#22c55e" : "#ef4444";
+                    const isGreen = Math.random() > 0.4;
+                    const color = isGreen ? "#4ade80" : "#ef4444";
                     const x = i * 20 + 10;
                     const y1 = Math.random() * 150 + 50;
                     const y2 = y1 + Math.random() * 80 + 20;
@@ -85,145 +91,122 @@ export default function TokenPage() {
                     const cy2 = y2 - Math.random() * 15;
                     return (
                       <g key={i}>
-                        <line x1={x} y1={y1} x2={x} y2={y2} stroke={color} strokeOpacity={0.4} />
-                        <rect x={x - 3} y={cy1} width="6" height={cy2 - cy1} fill={color} />
+                        <line x1={x} y1={y1} x2={x} y2={y2} stroke={color} strokeOpacity={0.6} />
+                        <rect x={x - 4} y={cy1} width="8" height={cy2 - cy1} fill={color} rx="2" />
                       </g>
                     );
                   })}
                 </g>
               </svg>
-              <div className="absolute top-4 left-4 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/50">Terminal Chart Connected</div>
+              <div className="absolute top-4 left-4 flex gap-2">
+                <Button variant="secondary" className="h-8 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">15m</Button>
+                <Button variant="secondary" className="h-8 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Price/MCap</Button>
+              </div>
             </div>
           </div>
 
-          {/* Bonding Curve & Data */}
-          <div className="border border-border bg-card p-6">
-            <h3 className="text-xs font-mono font-bold tracking-widest text-white mb-6 uppercase flex items-center gap-2">
-              <Layers className="w-4 h-4 text-primary" /> Liquidity Pool Status
-            </h3>
-            
-            <div className="space-y-4 bg-background border border-border p-4">
-              <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider">
-                <span className="text-muted-foreground uppercase">Bonding Curve Progress</span>
-                <span className="text-primary">85.00%</span>
-              </div>
-              <Progress value={85} className="h-2 bg-secondary rounded-none" />
-              <div className="flex justify-between text-[10px] font-mono text-muted-foreground font-bold tracking-wider">
-                <span>0 ETH</span>
-                <span>TARGET: 20 ETH</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              <div className="border border-border bg-background p-3">
-                <div className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-2">Security Score</div>
-                <div className="font-mono text-primary font-bold flex items-center gap-1 text-sm"><ShieldAlert className="w-4 h-4"/> 98/100</div>
-              </div>
-              <div className="border border-border bg-background p-3">
-                <div className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-2">Holders</div>
-                <div className="font-mono text-white font-bold text-sm">3,421</div>
-              </div>
-              <div className="border border-border bg-background p-3">
-                <div className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-2">Dev Allocation</div>
-                <div className="font-mono text-white font-bold text-sm">0.00%</div>
-              </div>
-              <div className="border border-border bg-background p-3">
-                <div className="text-[10px] font-mono font-bold tracking-wider text-muted-foreground uppercase mb-2">Supply Burned</div>
-                <div className="font-mono text-white font-bold text-sm">12.4%</div>
-              </div>
+          {/* About Coin */}
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">About Coin</h3>
+            <p className="text-sm text-white/90 leading-relaxed mb-6">
+              Roaring Kitty, the guy who turned GameStop into a cultural war between Reddit and Wall Street, posted the $RKC contract address from his account. The coin hit 6x in two minutes, and he followed up with 'red bandit crew 4 life.'
+            </p>
+            <div className="flex gap-2">
+              <Button variant="secondary" className="rounded-full text-xs font-bold h-8">TheRoaringKitty</Button>
             </div>
           </div>
         </div>
 
-        {/* Right Column - Execution Panel */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="border border-border bg-card flex flex-col h-full sticky top-20">
-            <div className="flex bg-background border-b border-border">
+        {/* RIGHT COLUMN: Execution & Bonding */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          
+          {/* Buy/Sell Panel */}
+          <div className="border border-border bg-card rounded-2xl flex flex-col">
+            <div className="flex p-2 gap-2 bg-background/50 border-b border-border rounded-t-2xl">
               <button 
-                className={`flex-1 py-4 text-xs font-mono font-bold tracking-widest uppercase transition-none border-b-2 ${tradeMode === "buy" ? "text-primary border-primary bg-primary/5" : "text-muted-foreground border-transparent hover:bg-secondary/50"}`}
+                className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${tradeMode === "buy" ? "bg-primary text-black" : "text-muted-foreground hover:bg-secondary hover:text-white"}`}
                 onClick={() => setTradeMode("buy")}
               >
-                Buy AGS
+                Buy
               </button>
               <button 
-                className={`flex-1 py-4 text-xs font-mono font-bold tracking-widest uppercase transition-none border-b-2 ${tradeMode === "sell" ? "text-destructive border-destructive bg-destructive/5" : "text-muted-foreground border-transparent hover:bg-secondary/50"}`}
+                className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${tradeMode === "sell" ? "bg-destructive text-white" : "text-muted-foreground hover:bg-secondary hover:text-white"}`}
                 onClick={() => setTradeMode("sell")}
               >
-                Sell AGS
+                Sell
               </button>
             </div>
             
-            <div className="p-6 flex flex-col gap-6">
-              {/* Order Type */}
+            <div className="p-4 flex flex-col gap-4">
+              <div className="flex justify-between items-center text-sm font-bold text-muted-foreground px-2">
+                <span className="cursor-pointer hover:text-white">Switch to RKC</span>
+                <span className="cursor-pointer hover:text-white">Slippage 2%</span>
+              </div>
+
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 font-mono font-bold text-muted-foreground">0.0</div>
+                <Input 
+                  type="number" 
+                  placeholder="" 
+                  className="h-16 bg-background border-border text-white font-mono rounded-xl focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-colors pl-12 pr-16 text-xl"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                  <span className="text-xs font-bold font-mono">ETH</span>
+                </div>
+              </div>
+
               <div className="flex gap-2">
-                <Button variant="secondary" className="flex-1 h-8 text-[10px] font-mono font-bold tracking-wider rounded-none bg-secondary text-white border border-border">MARKET</Button>
-                <Button variant="ghost" className="flex-1 h-8 text-[10px] font-mono font-bold tracking-wider rounded-none text-muted-foreground border border-transparent hover:border-border hover:bg-background">LIMIT</Button>
-                <Button variant="ghost" className="flex-1 h-8 text-[10px] font-mono font-bold tracking-wider rounded-none text-muted-foreground border border-transparent hover:border-border hover:bg-background">TWAP</Button>
+                <Button variant="secondary" className="flex-1 rounded-xl text-xs font-bold h-8 border border-border">Reset</Button>
+                <Button variant="secondary" className="flex-1 rounded-xl text-xs font-bold h-8 border border-border">1 ETH</Button>
+                <Button variant="secondary" className="flex-1 rounded-xl text-xs font-bold h-8 border border-border">5 ETH</Button>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground">
-                  <span>Order Size ({tradeMode === "buy" ? "ETH" : "AGS"})</span>
-                  <span className="cursor-pointer hover:text-white transition-colors">Avail: 0.0000</span>
-                </div>
-                <div className="relative">
-                  <Input 
-                    type="number" 
-                    placeholder="0.00" 
-                    className="h-12 bg-background border-border text-white font-mono rounded-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-none pl-4 pr-16 text-lg"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-muted-foreground">
-                    {tradeMode === "buy" ? "ETH" : "AGS"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex justify-center -my-3 relative z-10">
-                <div className="bg-background border border-border p-1.5 text-muted-foreground rounded-none">
-                  <ArrowRightLeft className="w-3 h-3 rotate-90" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground">
-                  <span>Estimated Receive</span>
-                </div>
-                <div className="relative">
-                  <Input 
-                    type="text" 
-                    readOnly
-                    className="h-12 bg-secondary/30 border-border text-muted-foreground font-mono rounded-none transition-none pl-4 pr-16 text-lg"
-                    value={amount ? (tradeMode === "buy" ? Number(amount) * 80645 : Number(amount) / 80645).toFixed(4) : "0.00"}
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-muted-foreground">
-                    {tradeMode === "buy" ? "AGS" : "ETH"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Slippage & Info */}
-              <div className="bg-background border border-border p-4 space-y-3 mt-2">
-                <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider text-muted-foreground">
-                  <span className="uppercase">Est. Execution Price</span>
-                  <span className="text-white">0.00001240 ETH</span>
-                </div>
-                <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider text-muted-foreground">
-                  <span className="uppercase">Price Impact</span>
-                  <span className="text-primary">&lt; 0.01%</span>
-                </div>
-                <div className="flex justify-between text-[10px] font-mono font-bold tracking-wider text-muted-foreground">
-                  <span className="uppercase">Max Slippage</span>
-                  <span className="text-white border-b border-dashed border-muted-foreground cursor-pointer">0.5%</span>
-                </div>
-              </div>
-
-              <Button className={`w-full h-14 text-sm font-mono tracking-widest font-bold uppercase rounded-none mt-2 transition-none shadow-none ${tradeMode === "buy" ? "bg-primary hover:bg-green-400 text-black" : "bg-destructive hover:bg-destructive/90 text-white"}`}>
-                {tradeMode === "buy" ? "Execute Buy Order" : "Execute Sell Order"}
+              <Button className={`w-full h-14 text-base font-bold rounded-xl mt-2 transition-transform active:scale-95 ${tradeMode === "buy" ? "bg-primary hover:bg-green-400 text-black" : "bg-destructive hover:bg-destructive/90 text-white"}`}>
+                Place Trade
               </Button>
             </div>
           </div>
+
+          {/* Creator Rewards / Progress */}
+          <div className="border border-border bg-card rounded-2xl p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Creator Rewards</h3>
+              <Button variant="secondary" className="h-8 rounded-full text-xs font-bold">Follow</Button>
+            </div>
+            
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">1</div>
+              <div>
+                <div className="text-sm font-bold text-white flex items-center gap-2">1nc1...1111 <span className="text-[10px] bg-secondary px-1.5 py-0.5 rounded-md">Creator</span></div>
+                <div className="text-xs text-primary font-bold">✓ 100%</div>
+              </div>
+            </div>
+
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Bonding curve progress</h3>
+            <div className="flex justify-between text-xs font-bold mb-2">
+              <span className="text-white">Target: 20 ETH</span>
+              <span className="text-primary">100.0%</span>
+            </div>
+            <Progress value={100} className="h-2 bg-secondary rounded-full [&>div]:bg-primary mb-2" />
+            <p className="text-xs text-muted-foreground font-bold">Coin has graduated to DEX!</p>
+          </div>
+
+          {/* Voice Chat */}
+          <div className="border border-border bg-card rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center"><MessageCircle className="w-5 h-5 text-muted-foreground" /></div>
+              <div>
+                <div className="text-sm font-bold text-white">Voice chat</div>
+                <div className="text-xs text-muted-foreground">Talk live with other $RKC holders</div>
+              </div>
+            </div>
+            <Button className="w-full h-12 bg-primary text-black hover:bg-green-400 font-bold rounded-xl transition-all">
+              Join voice chat
+            </Button>
+          </div>
+
         </div>
 
       </div>
