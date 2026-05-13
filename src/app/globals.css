@@ -9,8 +9,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-heading: var(--font-sans);
-  
+  --font-heading: var(--font-heading);
+
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -33,54 +33,322 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --radius-full: 9999px;
 }
 
 :root, .dark {
-  --background: #111111; /* Very dark gray, almost black */
-  --foreground: #ffffff;
-  --card: #18181b; /* Slightly lighter for cards */
-  --card-foreground: #ffffff;
-  --popover: #18181b;
+  /* ── Base ── */
+  --background:       #080808;
+  --foreground:       #ffffff;
+  --card:             #111111;
+  --card-foreground:  #ffffff;
+  --popover:          #111111;
   --popover-foreground: #ffffff;
-  
-  /* Primary color: Vibrant Mint Green */
-  --primary: #4ade80; 
+
+  /* ── Accent Palette ── */
+  --accent-amber:     #F5A623;
+  --accent-cyan:      #00FFE5;
+  --accent-red:       #FF3B3B;
+  --accent-green:     #00FF87;
+  --charity-warm:     #FF6B6B;
+
+  /* ── Shadcn Compatibility ── */
+  --primary:          #F5A623;
   --primary-foreground: #000000;
-  
-  --secondary: #27272a;
+  --secondary:        #1A1A1A;
   --secondary-foreground: #ffffff;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  
-  --accent: #4ade80;
+  --muted:            #1A1A1A;
+  --muted-foreground: #888888;
+  --accent:           #F5A623;
   --accent-foreground: #000000;
-  
-  --destructive: #ef4444;
-  
-  --border: #27272a;
-  --input: #18181b;
-  --ring: #4ade80;
-  
-  --radius: 1rem; /* Soft rounded base */
+  --destructive:      #FF3B3B;
+
+  --border:           rgba(255,255,255,0.06);
+  --input:            #1A1A1A;
+  --ring:             #F5A623;
+  --radius:           0.75rem;
+
+  /* ── Text Scale ── */
+  --text-primary:     #ffffff;
+  --text-secondary:   #888888;
+  --text-muted:       #444444;
+
+  /* ── Surfaces ── */
+  --bg-surface:       #111111;
+  --bg-elevated:      #1A1A1A;
 }
 
+/* ─────────────────────────────────────────────
+   NOISE GRAIN OVERLAY
+───────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─────────────────────────────────────────────
+   MICRO GRID BACKGROUND
+───────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─────────────────────────────────────────────
+   BASE STYLES
+───────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: #080808;
+    color: #ffffff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    position: relative;
   }
+
   html {
-    @apply font-sans;
     color-scheme: dark;
   }
-  
-  /* Utility for financial numbers */
-  .mono-num {
-    @apply font-mono tracking-tight;
+
+  h1, h2, h3 {
+    font-family: 'Syne', system-ui, sans-serif;
   }
+
+  .font-mono, code, .mono-num {
+    font-family: 'Departure Mono', monospace;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────────── */
+
+/* Ticker infinite scroll */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Amber glow pulse */
+@keyframes amber-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(245,166,35,0.3); }
+  50%       { box-shadow: 0 0 24px rgba(245,166,35,0.7), 0 0 48px rgba(245,166,35,0.3); }
+}
+
+/* Crown sway */
+@keyframes crown-sway {
+  0%, 100% { transform: rotate(-8deg); }
+  50%       { transform: rotate(8deg); }
+}
+
+/* Network dot blink */
+@keyframes net-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+/* Card border flash (buy) */
+@keyframes flash-buy {
+  0%   { box-shadow: 0 0 0 2px rgba(245,166,35,0); }
+  25%  { box-shadow: 0 0 0 2px rgba(245,166,35,0.9), 0 0 20px rgba(245,166,35,0.4); }
+  100% { box-shadow: 0 0 0 2px rgba(245,166,35,0); }
+}
+
+/* Card border flash (sell) */
+@keyframes flash-sell {
+  0%   { box-shadow: 0 0 0 2px rgba(255,59,59,0); }
+  25%  { box-shadow: 0 0 0 2px rgba(255,59,59,0.9), 0 0 20px rgba(255,59,59,0.4); }
+  100% { box-shadow: 0 0 0 2px rgba(255,59,59,0); }
+}
+
+/* HOT badge flame flicker */
+@keyframes flame-flicker {
+  0%, 100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+  33%       { transform: scaleY(1.05) scaleX(0.97); opacity: 0.9; }
+  66%       { transform: scaleY(0.97) scaleX(1.03); opacity: 1; }
+}
+
+/* NEW badge shimmer */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Toast slide in */
+@keyframes toast-in {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* Toast slide out */
+@keyframes toast-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(110%); opacity: 0; }
+}
+
+/* Whale emoji swim */
+@keyframes whale-swim {
+  from { transform: translateX(-120px); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+
+/* Particle rise */
+@keyframes particle-rise {
+  0%   { transform: translateY(0) scale(1);   opacity: 1; }
+  100% { transform: translateY(-60px) scale(0); opacity: 0; }
+}
+
+/* Icon bounce on hover */
+@keyframes icon-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
+
+/* Gradient border spin */
+@keyframes border-spin {
+  from { --angle: 0deg; }
+  to   { --angle: 360deg; }
+}
+
+/* ─────────────────────────────────────────────
+   UTILITY CLASSES
+───────────────────────────────────────────── */
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Departure Mono for numbers */
+.num { font-family: 'Departure Mono', monospace; }
+
+/* Amber glow text */
+.text-glow-amber {
+  text-shadow: 0 0 12px rgba(245,166,35,0.6);
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(245,166,35,0.15);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: 12px;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #F5A623, #FF6B6B, #00FFE5, #F5A623);
+  background-size: 300% 300%;
+  animation: shimmer 3s linear infinite;
+  z-index: -1;
+}
+
+/* Flash animations */
+.flash-buy  { animation: flash-buy  0.6s ease-out; }
+.flash-sell { animation: flash-sell 0.6s ease-out; }
+
+/* Tab underline transition */
+.tab-active {
+  color: #F5A623;
+  border-bottom: 2px solid #F5A623;
+}
+
+/* Network status dot */
+.net-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00FF87;
+  animation: net-blink 2s ease-in-out infinite;
+  box-shadow: 0 0 6px #00FF87;
+}
+
+/* Progress bar amber fill */
+.progress-amber {
+  height: 3px;
+  background: #1A1A1A;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.progress-amber-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F5A623, #FFD27F);
+  border-radius: 9999px;
+  transition: width 1s ease;
+}
+
+/* HOT badge */
+.badge-hot {
+  background: rgba(245,166,35,0.2);
+  color: #F5A623;
+  border: 1px solid rgba(245,166,35,0.4);
+  font-family: 'Departure Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  animation: flame-flicker 1.5s ease-in-out infinite;
+}
+
+/* NEW badge */
+.badge-new {
+  background: rgba(0,255,135,0.15);
+  color: #00FF87;
+  border: 1px solid rgba(0,255,135,0.3);
+  font-family: 'Departure Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-image: linear-gradient(90deg, transparent 0%, rgba(0,255,135,0.2) 50%, transparent 100%);
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+/* CHARITY badge */
+.badge-charity {
+  background: rgba(255,107,107,0.15);
+  color: #FF6B6B;
+  border: 1px solid rgba(255,107,107,0.3);
+  font-family: 'Departure Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* AGENT badge */
+.badge-agent {
+  background: rgba(0,255,229,0.1);
+  color: #00FFE5;
+  border: 1px solid rgba(0,255,229,0.3);
+  font-family: 'Departure Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
